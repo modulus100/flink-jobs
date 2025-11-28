@@ -2,27 +2,27 @@ services:
   jobmanager:
     image: flink:1.20.0-scala_2.12
     container_name: flink-jobmanager
-    command: jobmanager
+    command: ["/bin/bash","-lc","cp -a /opt/flink/lib-custom/. /opt/flink/lib/ 2>/dev/null || true && jobmanager"]
     ports:
       - "8081:8081"
     environment:
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: jobmanager
     volumes:
-      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib:ro
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib-custom:ro
     networks:
       - flink-net
 
   taskmanager:
     image: flink:1.20.0-scala_2.12
     container_name: flink-taskmanager
-    command: taskmanager
+    command: ["/bin/bash","-lc","cp -a /opt/flink/lib-custom/. /opt/flink/lib/ 2>/dev/null || true && taskmanager"]
     environment:
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
     volumes:
-      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib:ro
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib-custom:ro
     depends_on:
       - jobmanager
     networks:
