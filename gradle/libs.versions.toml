@@ -20,6 +20,7 @@ flink-clients = { module = "org.apache.flink:flink-clients", version.ref = "flin
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 flink-connector-kafka = { module = "org.apache.flink:flink-connector-kafka", version.ref = "flink-kafka" }
 flink-connector-base = { module = "org.apache.flink:flink-connector-base", version.ref = "flink" }
+flink-sql-connector-kafka = { module = "org.apache.flink:flink-sql-connector-kafka", version.ref = "flink-kafka" }
 confluent-kafka-protobuf-serializer = { module = "io.confluent:kafka-protobuf-serializer", version.ref = "confluent" }
 confluent-schema-registry = { module = "io.confluent:kafka-schema-registry-client", version.ref = "confluent" }
 confluent-kafka-protobuf-provider = { module = "io.confluent:kafka-protobuf-provider", version.ref = "confluent" }

@@ -15,6 +15,7 @@ dependencies {
 
     // Kafka connector for Table API
     implementation(libs.flink.connector.kafka)
+    implementation(libs.flink.sql.connector.kafka)
 
     // Confluent SQL Protobuf format
     implementation(libs.confluent.flink.sql.protobuf)
