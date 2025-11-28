@@ -1,0 +1,31 @@
+syntax = "proto3";
+package org.example;
+
+option java_multiple_files = true;
+option java_package = "org.example";
+
+import "cloud_event.proto";
+
+// First nested object
+message Sender {
+  string name = 1;
+  string email = 2;
+}
+
+// Second nested object
+message Metadata {
+  string language = 1;
+  string region = 2;
+  map<string, string> tags = 3; // Optional key-value metadata
+}
+
+// Main message with nested objects
+message GreetingProtobuf {
+  string message2 = 1;  // Optional string (nullable in Avro)
+  string message = 2;   // Required string in Avro, always present in proto3
+  int64 timestamp = 3;  // Corresponds to Avro long
+
+  Sender sender = 4;    // Nested object
+  Metadata metadata = 5; // Nested object
+  CloudEvent event = 6; // Fully qualified reference to imported CloudEvent
+}

@@ -1,0 +1,59 @@
+services:
+  jobmanager:
+    image: flink:1.20.0-scala_2.12
+    container_name: flink-jobmanager
+    command: jobmanager
+    ports:
+      - "8081:8081"
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: jobmanager
+    networks:
+      - flink-net
+
+  taskmanager:
+    image: flink:1.20.0-scala_2.12
+    container_name: flink-taskmanager
+    command: taskmanager
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    depends_on:
+      - jobmanager
+    networks:
+      - flink-net
+
+  sql-client:
+    image: flink:1.20.0-scala_2.12
+    container_name: flink-sql-client
+    entrypoint: ["/bin/bash","-lc","/opt/flink/bin/sql-client.sh -l /opt/sql-libs -f /opt/sql/kafka_to_kafka.sql"]
+    volumes:
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/sql-libs:ro
+      - ./kafka-sql-protobuf/sql:/opt/sql:ro
+    depends_on:
+      - jobmanager
+      - taskmanager
+    networks:
+      - flink-net
+
+  sql-gateway:
+    image: flink:1.20.0-scala_2.12
+    container_name: flink-sql-gateway
+    entrypoint: ["/bin/bash","-lc","/opt/flink/bin/sql-gateway.sh start -Drest.address=0.0.0.0 -Drest.port=8083"]
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/sql-libs:ro
+      - ./kafka-sql-protobuf/sql:/opt/sql:ro
+    environment:
+      - FLINK_LIB_DIR=/opt/sql-libs
+    depends_on:
+      - jobmanager
+      - taskmanager
+    networks:
+      - flink-net
+
+networks:
+  flink-net:
+    external: true

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package org.example;
+
+option java_package = "org.example";
+
+message CloudEvent {
+  string id = 1;
+  string source = 2;
+  string type = 3;
+  string data_content_type = 4;
+  string version = 5;
+  string time = 6;
+}
