@@ -29,6 +29,11 @@ Use the main compose file to start infra:
 docker compose up -d kafka postgres keycloak registry registry-ui kafdrop
 ```
 
+Using Podman instead of Docker:
+```sh
+podman compose up -d kafka postgres keycloak registry registry-ui kafdrop
+```
+
 - Kafka bootstrap (host): `localhost:9092`
 - Schema Registry (host): `http://localhost:8001/apis/ccompat/v7`
 
@@ -58,6 +63,11 @@ A dedicated compose file is provided: `docker-compose.flink.yml`.
 docker network create flink-net
 ```
 
+Podman:
+```sh
+podman network create flink-net
+```
+
 2) Connect existing services to the network:
 
 ```sh
@@ -65,10 +75,21 @@ docker network connect flink-net kafka
 docker network connect flink-net apicurio-registry
 ```
 
+Podman:
+```sh
+podman network connect flink-net kafka
+podman network connect flink-net apicurio-registry
+```
+
 3) Start Flink cluster:
 
 ```sh
 docker compose -f docker-compose.flink.yml up -d jobmanager taskmanager
+```
+
+Podman:
+```sh
+podman compose -f docker-compose.flink.yml up -d jobmanager taskmanager
 ```
 
 4) Submit SQL using the containerized SQL Client:
@@ -81,10 +102,21 @@ docker compose -f docker-compose.flink.yml up -d jobmanager taskmanager
 docker compose -f docker-compose.flink.yml run --rm sql-client
 ```
 
+Podman:
+```sh
+podman compose -f docker-compose.flink.yml run --rm sql-client
+```
+
 Alternatively, start the SQL Gateway for REST submissions:
 
 ```sh
 docker compose -f docker-compose.flink.yml up -d sql-gateway
+# REST API now at http://localhost:8083
+```
+
+Podman:
+```sh
+podman compose -f docker-compose.flink.yml up -d sql-gateway
 # REST API now at http://localhost:8083
 ```
 
