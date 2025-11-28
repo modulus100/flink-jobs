@@ -19,7 +19,16 @@ CREATE TABLE src (
   'properties.group.id' = 'flink-sql-group',
   'scan.startup.mode' = 'earliest-offset',
   'format' = 'protobuf-confluent',
-  'schema.registry.url' = 'http://localhost:8001/apis/ccompat/v7'
+  'schema.registry.url' = 'http://localhost:8001/apis/ccompat/v7',
+  -- OAuth for Schema Registry (matches KafkaConsumerProtobufJob)
+  'bearer.auth.credentials.source' = 'OAUTHBEARER',
+  'bearer.auth.issuer.endpoint.url' = 'http://localhost:8888/realms/apicurio/protocol/openid-connect/token',
+  'bearer.auth.client.id' = 'apicurio-api',
+  'bearer.auth.client.secret' = 'JeKMaLuvEwL5Tiyv9O5L6jJZfcsqiJYQ',
+  'bearer.auth.scope' = '',
+  -- Subject strategy + registration behavior
+  'auto.register.schemas' = 'false',
+  'value.subject.name.strategy' = 'io.confluent.kafka.serializers.subject.TopicRecordNameStrategy'
 );
 
 CREATE TABLE sink (
@@ -35,6 +44,15 @@ CREATE TABLE sink (
   'properties.bootstrap.servers' = 'localhost:9092',
   'format' = 'protobuf-confluent',
   'schema.registry.url' = 'http://localhost:8001/apis/ccompat/v7',
+  -- OAuth for Schema Registry (matches KafkaConsumerProtobufJob)
+  'bearer.auth.credentials.source' = 'OAUTHBEARER',
+  'bearer.auth.issuer.endpoint.url' = 'http://localhost:8888/realms/apicurio/protocol/openid-connect/token',
+  'bearer.auth.client.id' = 'apicurio-api',
+  'bearer.auth.client.secret' = 'JeKMaLuvEwL5Tiyv9O5L6jJZfcsqiJYQ',
+  'bearer.auth.scope' = '',
+  -- Subject strategy + registration behavior
+  'auto.register.schemas' = 'false',
+  'value.subject.name.strategy' = 'io.confluent.kafka.serializers.subject.TopicRecordNameStrategy',
   'sink.partitioner' = 'fixed'
 );
 
