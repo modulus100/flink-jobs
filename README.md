@@ -57,6 +57,17 @@ The client runs an embedded mini-cluster and stops the job when the client exits
 ### Option B: Run a Flink cluster in a separate compose and submit SQL
 A dedicated compose file is provided: `docker-compose.flink.yml`.
 
+0) Ensure connector/format jars are available to the cluster
+- The compose file mounts `kafka-sql-protobuf/build/sql-libs` into `/opt/flink/lib` on JobManager and TaskManager.
+- Build them first:
+```sh
+./gradlew :kafka-sql-protobuf:prepareSqlLibs
+```
+- Alternative (if you don’t mount libs): start SQL Client and load jars manually:
+```sql
+ADD JAR '/opt/sql-libs/<jar-name>.jar';
+```
+
 1) Create a shared network once:
 
 ```sh

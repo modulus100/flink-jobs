@@ -8,6 +8,8 @@ services:
     environment:
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: jobmanager
+    volumes:
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib:ro
     networks:
       - flink-net
 
@@ -19,6 +21,8 @@ services:
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
+    volumes:
+      - ./kafka-sql-protobuf/build/sql-libs:/opt/flink/lib:ro
     depends_on:
       - jobmanager
     networks:
